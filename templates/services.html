@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section id="services" class="services">
+
+    <h2>Our Services</h2>
+
+    <div class="service-grid">
+
+        <div class="card">
+            <img src="{{ url_for('static', filename='images/wedding.jpg') }}">
+            <h3>Wedding Planning</h3>
+            <p>Dream weddings designed with perfection.</p>
+        </div>
+
+        <div class="card">
+            <img src="{{ url_for('static', filename='images/reception.jpg') }}">
+            <h3>Reception Events</h3>
+            <p>Elegant receptions and celebrations.</p>
+        </div>
+
+        <div class="card">
+            <img src="{{ url_for('static', filename='images/birthday.jpg') }}">
+            <h3>Birthday Parties</h3>
+            <p>Memorable birthday celebrations.</p>
+        </div>
+
+        <div class="card">
+            <img src="{{ url_for('static', filename='images/catering.jpg') }}">
+            <h3>Catering</h3>
+            <p>Premium menus crafted for every event.</p>
+        </div>
+
+        <div class="card">
+            <img src="{{ url_for('static', filename='images/photography.jpg') }}">
+            <h3>Photography</h3>
+            <p>Capturing your precious memories.</p>
+        </div>
+
+        <div class="card">
+            <img src="{{ url_for('static', filename='images/entertainment.jpg') }}">
+            <h3>Entertainment</h3>
+            <p>Music, DJs and live performances.</p>
+        </div>
+        <div class="card">
+            <img src="{{ url_for('static', filename='images/house-warming.jpg') }}" alt="House Warming">
+            <h3>House Warming</h3>
+            <p>Elegant housewarming celebrations with traditional rituals and personalized event arrangements.</p>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

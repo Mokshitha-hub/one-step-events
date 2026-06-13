@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Contact Us — One Step Events</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<script>
+function toggleDropdown(){
+    const options = document.getElementById('customOptions');
+    const selected = document.querySelector('.custom-select-selected');
+    options.classList.toggle('open');
+    selected.classList.toggle('active');
+}
+
+function selectOption(value){
+    document.getElementById('selectedText').textContent = value;
+    document.getElementById('eventTypeValue').value = value;
+    document.querySelector('.custom-select-selected').classList.add('selected-value');
+    document.querySelector('.custom-select-selected').classList.remove('active');
+    document.getElementById('customOptions').classList.remove('open');
+
+    const otherInput = document.getElementById('otherEventInput');
+    if(value === 'Other'){
+        otherInput.style.display = 'block';
+    } else {
+        otherInput.style.display = 'none';
+    }
+}
+
+// close dropdown if clicked outside
+document.addEventListener('click', function(e){
+    if(!e.target.closest('.custom-select-wrapper')){
+        document.getElementById('customOptions').classList.remove('open');
+        document.querySelector('.custom-select-selected').classList.remove('active');
+    }
+});
+</script>
+<body class="contact-page">
+
+<!-- NAVBAR -->
+<nav>
+    <div class="logo-container">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="One Step Events Logo">
+        <div class="logo">ONE STEP EVENTS</div>
+    </div>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/services">Services</a></li>
+        <li><a href="/contact">Contact Us</a></li>
+    </ul>
+</nav>
+
+<!-- CONTACT SECTION -->
+<section class="contact">
+    <div class="contact-wrapper">
+
+        <!-- LEFT: Heading + Info -->
+        <div class="contact-left">
+            <p class="contact-eyebrow">Enquire</p>
+            <h1 class="contact-headline">
+                Let's design your<br>
+                next <em>signature</em><br>
+                <em>event.</em>
+            </h1>
+            <p class="contact-tagline">
+                Share a few details and our team will be in touch
+                within 24 hours with initial concepts and
+                personalised arrangements.
+            </p>
+
+            <div class="contact-info-list">
+                <div class="contact-info-item">
+                    <div class="info-icon">📞</div>
+                    <span class="info-text">+91 903069110</span>
+                </div>
+                <div class="contact-info-item">
+                    <div class="info-icon">✉️</div>
+                    <span class="info-text">onestepevents3@gmail.com</span>
+                </div>
+                <div class="contact-info-item">
+                    <div class="info-icon">📍</div>
+                    <span class="info-text">Hyderabad, Telangana, India</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: Form -->
+        <div class="contact-right">
+            <form action="/submit-enquiry" method="POST">
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" name="full_name" placeholder="Your name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Mobile Number</label>
+                        <input type="tel" name="mobile" placeholder="+91 00000 00000">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                       <input type="email" name="email" placeholder="you@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Expected Date</label>
+                        <input type="date" name="expected_date">
+                    </div>
+
+                    <div class="form-group full-width">
+    <label class="form-label">Event Type</label>
+    <div class="custom-select-wrapper">
+        <div class="custom-select-selected" onclick="toggleDropdown()">
+            <span id="selectedText">Select your event...</span>
+            <span class="custom-arrow">▾</span>
+        </div>
+        <div class="custom-select-options" id="customOptions">
+            <div onclick="selectOption('Wedding')">Wedding</div>
+            <div onclick="selectOption('Engagement')">Engagement</div>
+            <div onclick="selectOption('Birthday Party')">Birthday Party</div>
+            <div onclick="selectOption('Corporate Event')">Corporate Event</div>
+            <div onclick="selectOption('Reception')">Reception</div>
+            <div onclick="selectOption('House Warming')">House Warming</div>
+            <div onclick="selectOption('Photography')">Photography</div>
+            <div onclick="selectOption('Catering')">Catering</div>
+            <div onclick="selectOption('Entertainment')">Entertainment</div>
+            <div onclick="selectOption('Other')">Other</div>
+        </div>
+        <input type="hidden" name="event_type" id="eventTypeValue">
+    </div>
+    <input type="text" id="otherEventInput" placeholder="Please specify your event..." style="display:none; margin-top:12px;">
+</div>
+                    <div class="form-group">
+    <label class="form-label">Budget</label>
+    <input
+        type="text"
+        name="budget"
+        placeholder="Enter Budget"
+        required
+    >
+</div>
+                    <div class="form-group full-width">
+                        <label class="form-label">Tell Us About Your Vision</label>
+                        <textarea name="vision" placeholder="Venue preferences, theme, guest count, special requests..."></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">
+                            ✦ Submit Your Enquiry
+                        </button>
+                        <button type="button" class="btn-whatsapp"
+                            onclick="window.open('https://wa.me/91903069110','_blank')">
+                            💬 WhatsApp Us
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+    </div>
+</section>
+
+
+</body>
+</html>
+</section>
+
+{% endblock %}

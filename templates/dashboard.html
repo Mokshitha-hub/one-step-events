@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="dashboard">
+
+   <div class="dashboard-header"> <h1>Event Management Dashboard</h1> 
+    <p>Customer Enquiries & Event Requests</p>
+ </div>
+    
+
+    </div>
+
+    <div class="stats-container">
+
+        <div class="stat-card card-pink">
+            <div class="card-icon"></div>
+            <h2>{{ enquiries|length }}</h2>
+            <p>Active Events</p>
+        </div>
+
+        <div class="stat-card card-green">
+            <div class="card-icon"></div>
+            <h2>1</h2>
+            <p>Approved Events</p>
+        </div>
+
+        <div class="stat-card card-blue">
+            <div class="card-icon"></div>
+            <h2>{{ enquiries|length }}</h2>
+            <p>Pending Review</p>
+        </div>
+    </div>
+
+    <div class="event-cards">
+
+        {% for enquiry in enquiries %}
+
+        <div class="event-card">
+
+            <div class="card-top">
+
+                <div>
+                    <h2>{{ enquiry["Full Name"] }}</h2>
+
+                </div>
+
+                <div class="event-budget-row">
+
+    <div class="event-badge">
+        {{ enquiry["Event Type"] }}
+    </div>
+
+    <div class="budget-box">
+        <strong>Budget</strong>
+        <p>₹{{ enquiry["Budget"] }}</p>
+    </div>
+
+</div> 
+
+            <div class="event-details">
+
+                <div class="detail-item">
+                    <span>📅</span>
+                    <div>
+                        <small>Date</small>
+                        <p>{{ enquiry["Expected Date"] }}</p>
+                    </div>
+                </div>
+
+                <div class="detail-item">
+                    <span>📱</span>
+                    <div>
+                        <small>Mobile</small>
+                        <p>{{ enquiry["Mobile Number"] }}</p>
+                    </div>
+                </div>
+
+                <div class="detail-item">
+                    <span>📧</span>
+                    <div>
+                        <small>Email</small>
+                        <p>{{ enquiry["Email"] }}</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="vision-box">
+                <strong>Customer Vision</strong>
+                <p>{{ enquiry["Vision"] }}</p>
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

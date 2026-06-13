@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>One Step Events</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<nav>
+    <div class="logo-container">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="One Step Events Logo">
+    <div class="logo">ONE STEP EVENTS</div>
+</div>
+
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/services">Services</a></li>
+        <li><a href="/contact">Contact Us</a></li>
+         <li><a href="/dashboard">Dashboard</a></li>
+    </ul>
+</nav>
+
+<section id="home" class="hero">
+
+    <div class="overlay"></div>
+
+    <div class="hero-content">
+        <h1>Creating Elegant Moments</h1>
+
+        <p>
+            • Weddings • Engagements • Birthdays • Corporate Events • House Warming • Others
+        </p>
+
+        <a href="/contact" class="book-btn">BOOK YOUR EVENT</a>
+    </div>
+
+</section>
+
+<section id="about" class="about">
+
+    <h2>About Us</h2>
+
+    <p>
+        One Step Events creates unforgettable experiences through
+        elegant planning, luxury decoration and flawless execution.
+    </p>
+
+    <!-- WHY CHOOSE US -->
+<section class="why-choose">
+    <h2>Why Choose Us? ✨</h2>
+    <p class="why-sub">We combine technology, expertise and a network of trusted vendors to deliver exceptional events every time.</p>
+    <div class="why-grid">
+        <div class="why-card">
+            <div class="why-icon">📅</div>
+            <h3>Single Platform</h3>
+            <p>No need to coordinate multiple vendors. We handle everything from one place, saving you time and stress.</p>
+        </div>
+        <div class="why-card">
+            <div class="why-icon">✨</div>
+            <h3>AI Budget Breakdown</h3>
+            <p>Get detailed vendor-wise budget allocation with exact costs instantly — no surprises, no hidden fees.</p>
+        </div>
+        <div class="why-card">
+            <div class="why-icon">👥</div>
+            <h3>Expert Team</h3>
+            <p>Our team coordinates all vendors so you don't have to. Dedicated professionals, every step of the way.</p>
+        </div>
+        <div class="why-card">
+            <div class="why-icon">📈</div>
+            <h3>Real-time Tracking</h3>
+            <p>Monitor your event planning progress every step of the way with live updates and instant notifications.</p>
+        </div>
+    </div>
+</section>
+ 
+<!-- COMPREHENSIVE SERVICES -->
+<section class="coverage">
+    <h2>Comprehensive Service Coverage</h2>
+    <p class="why-sub">Everything you need for a perfect event, all under one roof.</p>
+    <div class="coverage-grid">
+        <div class="coverage-chip"><span class="chip-check">✓</span> Food &amp; Catering</div>
+        <div class="coverage-chip"><span class="chip-check">✓</span> Decoration</div>
+        <div class="coverage-chip"><span class="chip-check">✓</span> Photography &amp; Media</div>
+        <div class="coverage-chip"><span class="chip-check">✓</span> Beauty &amp; Grooming</div>
+        <div class="coverage-chip"><span class="chip-check">✓</span> Entertainment</div>
+        <div class="coverage-chip"><span class="chip-check">✓</span> Rentals</div>
+        <div class="coverage-chip"><span class="chip-check">✓</span> Venues</div>
+    </div>
+</section>
+ 
+<!-- YOUR JOURNEY -->
+<section class="journey">
+    <h2>Your Journey ✦</h2>
+    <p class="why-sub">A simple four-step process to plan and enjoy your perfect event.</p>
+    <div class="journey-grid">
+        <div class="journey-card">
+            <div class="journey-icon">📝</div>
+            <h3>Submit Requirements</h3>
+            <p>Tell us about your event — date, guest count, theme, and preferences. We capture every detail.</p>
+        </div>
+        <div class="journey-card">
+            <div class="journey-icon">💌</div>
+            <h3>Receive Proposal</h3>
+            <p>Get a customized plan and budget tailored to your needs, with vendor-wise cost breakdown.</p>
+        </div>
+        <div class="journey-card">
+            <div class="journey-icon">✅</div>
+            <h3>Approve &amp; Relax</h3>
+            <p>We handle all vendor coordination, bookings, and logistics once you give the green light.</p>
+        </div>
+        <div class="journey-card">
+            <div class="journey-icon">🎉</div>
+            <h3>Enjoy Your Event</h3>
+            <p>We manage everything on the day so you can be fully present and celebrate with your loved ones.</p>
+        </div>
+    </div>
+</section>
+ 
+<!-- CTA -->
+<section class="cta-wrap">
+    <div class="cta-box">
+        <h2>Ready to Plan Your Perfect Event?</h2>
+        <p>Let us take care of every detail while you create memories that last a lifetime.</p>
+        <a href="/contact" class="book-btn">Get Started Today</a>
+    </div>
+</section>
+ 
+</section>
+
+<section id="services" class="services">
+
+    <h2>Our Services</h2>
+
+    <div class="service-grid">
+
+        <div class="card">
+            <img src="{{ url_for('static', filename='images/wedding.jpg') }}">
+            <h3>Wedding Planning</h3>
+            <p>Dream weddings designed with perfection.</p>
+        </div>
+
+        <div class="card">
+            <img src="{{ url_for('static', filename='images/reception.jpg') }}">
+            <h3>Reception Events</h3>
+            <p>Elegant receptions and celebrations.</p>
+        </div>
+
+        <div class="card">
+            <img src="{{ url_for('static', filename='images/birthday.jpg') }}">
+            <h3>Birthday Parties</h3>
+            <p>Memorable birthday celebrations.</p>
+        </div>
+
+        <div class="card">
+            <img src="{{ url_for('static', filename='images/catering.jpg') }}">
+            <h3>Catering</h3>
+            <p>Premium menus crafted for every event.</p>
+        </div>
+
+        <div class="card">
+            <img src="{{ url_for('static', filename='images/photography.jpg') }}">
+            <h3>Photography</h3>
+            <p>Capturing your precious memories.</p>
+        </div>
+
+        <div class="card">
+            <img src="{{ url_for('static', filename='images/entertainment.jpg') }}">
+            <h3>Entertainment</h3>
+            <p>Music, DJs and live performances.</p>
+        </div>
+        <div class="card">
+            <img src="{{ url_for('static', filename='images/house-warming.jpg') }}" alt="House Warming">
+            <h3>House Warming</h3>
+            <p>Elegant housewarming celebrations with traditional rituals and personalized event arrangements.</p>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- RICH FOOTER -->
+<footer class="site-footer">
+
+    <!-- Top row -->
+    <div class="footer-top">
+
+        <!-- Brand column -->
+        <div class="footer-brand">
+            <div class="footer-logo-wrap">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="One Step Events Logo">
+                <span class="footer-logo-text">ONE STEP EVENTS</span>
+            </div>
+            <p class="footer-desc">
+                Hyderabad's premier event management studio — crafting unforgettable weddings, celebrations and corporate experiences with elegance and grace.
+            </p>
+            <div class="footer-socials">
+                <a href="https://www.instagram.com/one.step.events" target="_blank" aria-label="Instagram">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="36" height="36" style="border-radius:8px;">
+                </a>
+                <a href="https://wa.me/919030691101" target="_blank" aria-label="WhatsApp">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="36" height="36">
+                </a>
+            </div>
+        </div>
+
+        <!-- Services column -->
+        <div class="footer-col">
+            <h4 class="footer-col-title">Services</h4>
+            <ul>
+                <li><a href="/services">Wedding Planning</a></li>
+                <li><a href="/services">Reception Events</a></li>
+                <li><a href="/services">Birthday Parties</a></li>
+                <li><a href="/services">Corporate Events</a></li>
+                <li><a href="/services">House Warming</a></li>
+                <li><a href="/services">Photography</a></li>
+                <li><a href="/services">Catering</a></li>
+                <li><a href="/services">Entertainment</a></li>
+            </ul>
+        </div>
+
+        <!-- Quick Links column -->
+        <div class="footer-col">
+            <h4 class="footer-col-title">Quick Links</h4>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About Us</a></li>
+                <li><a href="/services">Services</a></li>
+                <li><a href="/contact">Contact Us</a></li>
+                <li><a href="/contact">Book an Event</a></li>
+            </ul>
+        </div>
+
+        <!-- Contact column -->
+        <div class="footer-col">
+            <h4 class="footer-col-title">Contact</h4>
+            <ul class="footer-contact-list">
+                <li>
+                    <span class="fc-icon">📍</span>
+                    <span>Hyderabad, Telangana, India</span>
+                </li>
+                <li>
+                    <span class="fc-icon">📞</span>
+                    <span>+91 9030691101</span>
+                </li>
+                <li>
+                    <span class="fc-icon">✉️</span>
+                    <span>onestepevents3@gmail.com</span>
+                </li>
+            </ul>
+            <a href="/contact" class="footer-enquire-btn">Enquire Now</a>
+        </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+        <span>© 2026 One Step Events. All rights reserved.</span>
+        <span>Made with ♥ in Hyderabad</span>
+    </div>
+
+</footer>
+
+</body>
+</html>
