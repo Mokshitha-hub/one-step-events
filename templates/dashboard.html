@@ -93,12 +93,17 @@
 
             <form class="status-form" method="POST" action="{{ url_for('update_status') }}">
                 <input type="hidden" name="enquiry_id" value="{{ enquiry['Enquiry ID'] }}">
-                <label for="status-{{ loop.index0 }}">Status</label>
-                <select id="status-{{ loop.index0 }}" name="status">
-                    <option value="Pending" {% if enquiry.get('Status', 'Pending') != 'Approved' %}selected{% endif %}>Pending</option>
-                    <option value="Approved" {% if enquiry.get('Status') == 'Approved' %}selected{% endif %}>Approved</option>
-                </select>
-                <button type="submit">Save Status</button>
+                <label class="status-toggle" for="approve-{{ loop.index0 }}">
+                    <input
+                        id="approve-{{ loop.index0 }}"
+                        type="checkbox"
+                        name="approve_event"
+                        value="yes"
+                        {% if enquiry.get('Status') == 'Approved' %}checked{% endif %}
+                    >
+                    Approve event
+                </label>
+                <button type="submit">Save Approval</button>
             </form>
 
         </div>
