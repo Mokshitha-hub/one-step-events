@@ -101,14 +101,18 @@
             <form class="status-form" method="POST" action="{{ url_for('update_status') }}">
                 <input type="hidden" name="enquiry_id" value="{{ enquiry['Enquiry ID'] }}">
                 <p class="status-label">Current status: <strong>{{ enquiry.get('Status', 'Pending') }}</strong></p>
-                <input type="hidden" name="approve_event" value="yes">
-                <button type="submit">
-                    {% if enquiry.get('Status') == 'Approved' %}
-                    Keep Approved
-                    {% else %}
-                    Approve This Event
-                    {% endif %}
-                </button>
+                <div class="status-actions">
+                    <button type="submit" name="status_action" value="approve">
+                        {% if enquiry.get('Status') == 'Approved' %}
+                        Keep Approved
+                        {% else %}
+                        Approve This Event
+                        {% endif %}
+                    </button>
+                    <button type="submit" name="status_action" value="pending">
+                        Mark as Pending
+                    </button>
+                </div>
             </form>
 
         </div>

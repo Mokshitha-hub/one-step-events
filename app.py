@@ -131,7 +131,11 @@ def submit_enquiry():
 @app.route("/update-status", methods=["POST"])
 def update_status():
     enquiry_id = request.form["enquiry_id"]
-    new_status = "Approved" if request.form.get("approve_event") == "yes" else "Pending"
+    new_status = request.form.get("status_action", "pending")
+    if new_status == "approve":
+        new_status = "Approved"
+    else:
+        new_status = "Pending"
 
     df = load_enquiries()
     df.loc[df["Enquiry ID"].astype(str) == str(enquiry_id), "Status"] = new_status
