@@ -34,6 +34,13 @@
 
     <div class="event-cards">
 
+        {% if enquiries|length == 0 %}
+        <div class="event-card">
+            <h2>No enquiries yet</h2>
+            <p>Submitted enquiries will appear here, and you can approve them from this page.</p>
+        </div>
+        {% endif %}
+
         {% for enquiry in enquiries %}
 
         <div class="event-card">
@@ -93,17 +100,15 @@
 
             <form class="status-form" method="POST" action="{{ url_for('update_status') }}">
                 <input type="hidden" name="enquiry_id" value="{{ enquiry['Enquiry ID'] }}">
-                <label class="status-toggle" for="approve-{{ loop.index0 }}">
-                    <input
-                        id="approve-{{ loop.index0 }}"
-                        type="checkbox"
-                        name="approve_event"
-                        value="yes"
-                        {% if enquiry.get('Status') == 'Approved' %}checked{% endif %}
-                    >
-                    Approve event
-                </label>
-                <button type="submit">Save Approval</button>
+                <p class="status-label">Current status: <strong>{{ enquiry.get('Status', 'Pending') }}</strong></p>
+                <input type="hidden" name="approve_event" value="yes">
+                <button type="submit">
+                    {% if enquiry.get('Status') == 'Approved' %}
+                    Keep Approved
+                    {% else %}
+                    Approve This Event
+                    {% endif %}
+                </button>
             </form>
 
         </div>
