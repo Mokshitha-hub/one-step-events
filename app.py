@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 import pandas as pd
 import os
 from uuid import uuid4
@@ -6,10 +6,48 @@ from openpyxl import load_workbook
 from openpyxl.worksheet.table import Table, TableStyleInfo
 
 app = Flask(__name__)
+app.secret_key = "one_step_events_secret_key"
 
 FILE_NAME = "event_enquiries.xlsx"
 
+# =========================
+# 🔐 ONLY ADMIN LOGIN
+# =========================
+ADMIN_USERNAME = "admin"
+ADMIN_PASSWORD = "admin123"
 
+
+# =========================
+# 🔐 LOGIN PAGE (HIDDEN)
+# =========================
+@app.route("/secure-login-x9k2")   # hidden login URL
+def login_page():
+    if "user" in session:
+        return redirect(url_for("dashboard"))
+    return render_template("login.html")
+
+
+@app.route("/login", methods=["POST"])
+def login():
+    username = request.form["username"]
+    password = request.form["password"]
+
+    if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+        session["user"] = username
+        return redirect(url_for("dashboard"))
+
+    return "❌ Invalid Username or Password"
+
+
+@app.route("/logout")
+def logout():
+    session.pop("user", None)
+    return redirect(url_for("login_page"))
+
+
+# =========================
+# 📊 LOAD DATA
+# =========================
 def load_enquiries():
     schema_changed = False
 
@@ -28,10 +66,6 @@ def load_enquiries():
             "Status",
         ])
 
-    if "Enquiry ID" not in df.columns:
-        df["Enquiry ID"] = [str(uuid4()) for _ in range(len(df))]
-        schema_changed = True
-
     if "Status" not in df.columns:
         df["Status"] = "Pending"
         schema_changed = True
@@ -44,6 +78,9 @@ def load_enquiries():
     return df
 
 
+# =========================
+# 💾 SAVE DATA
+# =========================
 def save_enquiries(df):
     df.to_excel(FILE_NAME, index=False)
 
@@ -53,8 +90,7 @@ def save_enquiries(df):
     if "EventEnquiries" in ws.tables:
         del ws.tables["EventEnquiries"]
 
-    end_row = ws.max_row
-    table_range = f"A1:I{end_row}"
+    table_range = f"A1:I{ws.max_row}"
     tab = Table(displayName="EventEnquiries", ref=table_range)
 
     style = TableStyleInfo(
@@ -64,31 +100,32 @@ def save_enquiries(df):
         showRowStripes=True,
         showColumnStripes=False,
     )
+
     tab.tableStyleInfo = style
     ws.add_table(tab)
     wb.save(FILE_NAME)
 
+
+# =========================
+# 🏠 HOME PAGE (NO DASHBOARD HERE)
+# =========================
 @app.route("/")
 def home():
     return render_template("index.html")
 
-@app.route("/about")
-def about():
-    return render_template("about.html")
 
-@app.route("/services")
-def services():
-    return render_template("services.html")
-
-@app.route("/contact")
-def contact():
-    return render_template("contact.html")
-
+# =========================
+# 📊 DASHBOARD (PROTECTED)
+# =========================
 @app.route("/dashboard")
 def dashboard():
 
+    if "user" not in session:
+        return redirect(url_for("login_page"))
+
     df = load_enquiries()
     enquiries = df.to_dict(orient="records")
+
     approved_count = int((df["Status"] == "Approved").sum())
     pending_count = int((df["Status"] != "Approved").sum())
 
@@ -98,6 +135,11 @@ def dashboard():
         approved_count=approved_count,
         pending_count=pending_count
     )
+
+
+# =========================
+# 📝 SUBMIT ENQUIRY
+# =========================
 @app.route("/submit-enquiry", methods=["POST"])
 def submit_enquiry():
 
@@ -110,6 +152,7 @@ def submit_enquiry():
     vision = request.form["vision"]
 
     df = load_enquiries()
+
     new_row = pd.DataFrame([{
         "Enquiry ID": str(uuid4()),
         "Full Name": full_name,
@@ -124,14 +167,22 @@ def submit_enquiry():
 
     df = pd.concat([df, new_row], ignore_index=True)
     save_enquiries(df)
-    
+
     return render_template("success.html")
 
 
+# =========================
+# 🔄 UPDATE STATUS
+# =========================
 @app.route("/update-status", methods=["POST"])
 def update_status():
+
+    if "user" not in session:
+        return redirect(url_for("login_page"))
+
     enquiry_id = request.form["enquiry_id"]
     new_status = request.form.get("status_action", "pending")
+
     if new_status == "approve":
         new_status = "Approved"
     else:
@@ -144,6 +195,8 @@ def update_status():
     return redirect(url_for("dashboard"))
 
 
-
+# =========================
+# 🚀 RUN APP
+# =========================
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5002, debug=True)
+    app.run(host="0.0.0.0", port=5002, debug=True)
