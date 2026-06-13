@@ -21,13 +21,13 @@
 
         <div class="stat-card card-green">
             <div class="card-icon"></div>
-            <h2>1</h2>
+            <h2>{{ approved_count }}</h2>
             <p>Approved Events</p>
         </div>
 
         <div class="stat-card card-blue">
             <div class="card-icon"></div>
-            <h2>{{ enquiries|length }}</h2>
+            <h2>{{ pending_count }}</h2>
             <p>Pending Review</p>
         </div>
     </div>
@@ -90,6 +90,16 @@
                 <strong>Customer Vision</strong>
                 <p>{{ enquiry["Vision"] }}</p>
             </div>
+
+            <form class="status-form" method="POST" action="{{ url_for('update_status') }}">
+                <input type="hidden" name="enquiry_id" value="{{ enquiry['Enquiry ID'] }}">
+                <label for="status-{{ loop.index0 }}">Status</label>
+                <select id="status-{{ loop.index0 }}" name="status">
+                    <option value="Pending" {% if enquiry.get('Status', 'Pending') != 'Approved' %}selected{% endif %}>Pending</option>
+                    <option value="Approved" {% if enquiry.get('Status') == 'Approved' %}selected{% endif %}>Approved</option>
+                </select>
+                <button type="submit">Save Status</button>
+            </form>
 
         </div>
 

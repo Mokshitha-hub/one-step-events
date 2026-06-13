@@ -1,10 +1,72 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 import pandas as pd
 import os
+from uuid import uuid4
 from openpyxl import load_workbook
 from openpyxl.worksheet.table import Table, TableStyleInfo
 
 app = Flask(__name__)
+
+FILE_NAME = "event_enquiries.xlsx"
+
+
+def load_enquiries():
+    schema_changed = False
+
+    if os.path.exists(FILE_NAME):
+        df = pd.read_excel(FILE_NAME)
+    else:
+        df = pd.DataFrame(columns=[
+            "Enquiry ID",
+            "Full Name",
+            "Mobile Number",
+            "Email",
+            "Expected Date",
+            "Event Type",
+            "Budget",
+            "Vision",
+            "Status",
+        ])
+
+    if "Enquiry ID" not in df.columns:
+        df["Enquiry ID"] = [str(uuid4()) for _ in range(len(df))]
+        schema_changed = True
+
+    if "Status" not in df.columns:
+        df["Status"] = "Pending"
+        schema_changed = True
+
+    df["Status"] = df["Status"].fillna("Pending")
+
+    if schema_changed:
+        save_enquiries(df)
+
+    return df
+
+
+def save_enquiries(df):
+    df.to_excel(FILE_NAME, index=False)
+
+    wb = load_workbook(FILE_NAME)
+    ws = wb.active
+
+    if "EventEnquiries" in ws.tables:
+        del ws.tables["EventEnquiries"]
+
+    end_row = ws.max_row
+    table_range = f"A1:I{end_row}"
+    tab = Table(displayName="EventEnquiries", ref=table_range)
+
+    style = TableStyleInfo(
+        name="TableStyleMedium9",
+        showFirstColumn=False,
+        showLastColumn=False,
+        showRowStripes=True,
+        showColumnStripes=False,
+    )
+    tab.tableStyleInfo = style
+    ws.add_table(tab)
+    wb.save(FILE_NAME)
 
 @app.route("/")
 def home():
@@ -25,17 +87,16 @@ def contact():
 @app.route("/dashboard")
 def dashboard():
 
-    file_name = "event_enquiries.xlsx"
-
-    if os.path.exists(file_name):
-        df = pd.read_excel(file_name)
-        enquiries = df.to_dict(orient="records")
-    else:
-        enquiries = []
+    df = load_enquiries()
+    enquiries = df.to_dict(orient="records")
+    approved_count = int((df["Status"] == "Approved").sum())
+    pending_count = int((df["Status"] != "Approved").sum())
 
     return render_template(
         "dashboard.html",
-        enquiries=enquiries
+        enquiries=enquiries,
+        approved_count=approved_count,
+        pending_count=pending_count
     )
 @app.route("/submit-enquiry", methods=["POST"])
 def submit_enquiry():
@@ -48,55 +109,35 @@ def submit_enquiry():
     budget = request.form["budget"]
     vision = request.form["vision"]
 
-    enquiry = {
+    df = load_enquiries()
+    new_row = pd.DataFrame([{
+        "Enquiry ID": str(uuid4()),
         "Full Name": full_name,
         "Mobile Number": mobile,
         "Email": email,
         "Expected Date": expected_date,
         "Event Type": event_type,
-        "Vision": vision
-    }
+        "Budget": budget,
+        "Vision": vision,
+        "Status": "Pending",
+    }])
 
-    file_name = "event_enquiries.xlsx"
-    
-    new_row = pd.DataFrame([{
-    "Full Name": full_name,
-    "Mobile Number": mobile,
-    "Email": email,
-    "Expected Date": expected_date,
-    "Event Type": event_type,
-    "Budget": budget,
-    "Vision": vision
-}])
-    if os.path.exists(file_name):
-        df = pd.read_excel(file_name)
-        df = pd.concat([df, new_row], ignore_index=True)
-    else:
-        df = new_row
-
-    df.to_excel(file_name, index=False)
-
-    wb = load_workbook(file_name)
-    ws = wb.active
-
-    end_row = ws.max_row
-    end_col = ws.max_column
-
-    table_range = f"A1:G{end_row}"
-    tab = Table(displayName="EventEnquiries", ref=table_range)
-    
-    style = TableStyleInfo(
-    name="TableStyleMedium9",
-    showFirstColumn=False,
-    showLastColumn=False,
-    showRowStripes=True,
-    showColumnStripes=False
-    )
-    tab.tableStyleInfo = style
-    ws.add_table(tab)
-    wb.save(file_name)
+    df = pd.concat([df, new_row], ignore_index=True)
+    save_enquiries(df)
     
     return render_template("success.html")
+
+
+@app.route("/update-status", methods=["POST"])
+def update_status():
+    enquiry_id = request.form["enquiry_id"]
+    new_status = request.form["status"]
+
+    df = load_enquiries()
+    df.loc[df["Enquiry ID"].astype(str) == str(enquiry_id), "Status"] = new_status
+    save_enquiries(df)
+
+    return redirect(url_for("dashboard"))
 
 
 
