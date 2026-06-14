@@ -1386,3 +1386,96 @@ footer{
     color:white;
 }
 
+/* ── ADMIN LOGIN PAGE ── */
+
+.login-body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg, #2C1A35 0%, #3D2450 45%, #4A2D5F 100%);
+}
+
+.login-wrapper{
+    width:100%;
+    max-width:420px;
+    padding:20px;
+}
+
+.login-card{
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(201,168,224,0.15);
+    border-radius:20px;
+    padding:45px 40px;
+    backdrop-filter:blur(12px);
+    text-align:center;
+}
+
+.login-card h1{
+    font-family:'Cormorant Garamond', serif;
+    font-size:42px;
+    font-weight:700;
+    color:#F0E6FF;
+    margin-bottom:8px;
+}
+
+.login-sub{
+    font-family:'Poppins', sans-serif;
+    font-size:14px;
+    font-weight:300;
+    color:white;
+    margin-bottom:28px;
+}
+
+.login-error{
+    background:rgba(220,53,69,0.15);
+    border:1px solid rgba(220,53,69,0.4);
+    color:#ffb3bb;
+    font-family:'Poppins', sans-serif;
+    font-size:14px;
+    padding:12px 16px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+.login-form{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    text-align:left;
+}
+
+.login-form .form-label{
+    font-size:13px;
+    margin-bottom:6px;
+    display:block;
+}
+
+.login-form input{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(201,168,224,0.25);
+    border-radius:10px;
+    padding:14px 16px;
+    font-family:'Poppins', sans-serif;
+    font-size:16px;
+    color:#F0E6FF;
+    width:100%;
+    outline:none;
+    transition:all 0.3s ease;
+}
+
+.login-form input::placeholder{
+    color:rgba(201,168,224,0.4);
+}
+
+.login-form input:focus{
+    border-color:#C9A8E0;
+    background:rgba(255,255,255,0.10);
+    box-shadow:0 0 0 3px rgba(201,168,224,0.12);
+}
+
+.login-btn{
+    width:100%;
+    margin-top:10px;
+}

@@ -1,11 +1,29 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 import pandas as pd
 import os
 from uuid import uuid4
+from functools import wraps
+from werkzeug.security import generate_password_hash, check_password_hash
 from openpyxl import load_workbook
 from openpyxl.worksheet.table import Table, TableStyleInfo
 
 app = Flask(__name__)
+
+# ── ADMIN AUTH CONFIG ──
+app.secret_key = os.environ.get("SECRET_KEY", "replace-this-with-a-long-random-string")
+
+ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "1s events")
+ADMIN_PASSWORD_HASH = generate_password_hash(
+    os.environ.get("ADMIN_PASSWORD", "rdms@2026")
+)
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get("logged_in"):
+            return redirect(url_for("login"))
+        return f(*args, **kwargs)
+    return decorated_function
 
 FILE_NAME = "event_enquiries.xlsx"
 
@@ -84,7 +102,28 @@ def services():
 def contact():
     return render_template("contact.html")
 
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    error = None
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        if username == ADMIN_USERNAME and check_password_hash(ADMIN_PASSWORD_HASH, password):
+            session["logged_in"] = True
+            session["username"] = username
+            return redirect(url_for("dashboard"))
+        else:
+            error = "Invalid username or password"
+    return render_template("login.html", error=error)
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
+
 @app.route("/dashboard")
+@login_required
 def dashboard():
 
     df = load_enquiries()
